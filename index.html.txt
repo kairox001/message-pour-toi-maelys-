@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pour toi, Maelys</title>
+  <meta name="description" content="Un petit site pour avouer ses sentiments avec douceur." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#fff6f8;
+      --bg-soft:#fff1f5;
+      --paper:#fffafb;
+      --ink:#2f2328;
+      --muted:#7c6670;
+      --pink:#ff5f8f;
+      --pink-dark:#ec4b7d;
+      --rose:#ffd6e3;
+      --rose-2:#ffc4d6;
+      --violet:#c9a6ff;
+      --violet-dark:#a97af6;
+      --line:rgba(255,95,143,.18);
+      --shadow:0 20px 60px rgba(236,75,125,.12);
+      --radius:28px;
+      --max:1260px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(255,192,214,.45) 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 8%, rgba(255,220,230,.75) 0 4px, transparent 5px),
+        radial-gradient(circle at 20% 75%, rgba(255,196,214,.35) 0 3px, transparent 4px),
+        linear-gradient(180deg, #fff7f9 0%, #fff3f7 100%);
+      color:var(--ink);
+      font-family:"Baloo 2", cursive;
+      overflow-x:hidden;
+    }
+
+    .floating-hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      overflow:hidden;
+    }
+
+    .floating-hearts span{
+      position:absolute;
+      width:18px;
+      height:18px;
+      background:linear-gradient(180deg, #ff9ebc, #ff6f9e);
+      transform:rotate(45deg);
+      opacity:.18;
+      filter:blur(.2px);
+      animation:floatUp linear infinite;
+    }
+    .floating-hearts span::before,
+    .floating-hearts span::after{
+      content:"";
+      position:absolute;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:inherit;
+    }
+    .floating-hearts span::before{left:-9px}
+    .floating-hearts span::after{top:-9px}
+
+    @keyframes floatUp{
+      0%{transform:translateY(40px) rotate(45deg) scale(.8); opacity:0}
+      10%{opacity:.18}
+      100%{transform:translateY(-120vh) rotate(45deg) scale(1.15); opacity:0}
+    }
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter:blur(14px);
+      background:rgba(255,247,249,.75);
+      border-bottom:1px solid rgba(255,95,143,.08);
+    }
+
+    .nav{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      font-size:1.1rem;
+      color:var(--pink-dark);
+      letter-spacing:.02em;
+    }
+
+    .brand-mark{
+      width:40px;height:40px;
+      border-radius:14px;
+      background:
+        radial-gradient(circle at 50% 45%, #fff 0 16%, transparent 17%),
+        linear-gradient(180deg, #ffa8c2, #ff6a98);
+      box-shadow:inset 0 2px 0 rgba(255,255,255,.55), 0 8px 20px rgba(255,95,143,.2);
+      position:relative;
+      transform:rotate(45deg);
+    }
+    .brand-mark::before,
+    .brand-mark::after{
+      content:"";
+      position:absolute;
+      width:40px;height:40px;
+      border-radius:50%;
+      background:linear-gradient(180deg, #ffa8c2, #ff6a98);
+    }
+    .brand-mark::before{left:-20px; top:0}
+    .brand-mark::after{left:0; top:-20px}
+
+    .nav-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+      color:var(--pink-dark);
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:700;
+      text-decoration:none;
+      transition:.25s ease;
+    }
+
+    .pill:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,95,143,.26);
+      box-shadow:0 12px 24px rgba(255,95,143,.12);
+    }
+
+    main{
+      position:relative;
+      z-index:1;
+      max-width:var(--max);
+      margin:0 auto;
+      padding:34px 16px 80px;
+    }
+
+    .hero{
+      min-height:40vh;
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      align-items:center;
+      padding:28px 0 24px;
+    }
+
+    .hero-copy{
+      background:linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,250,251,.92));
+      border:1px solid rgba(255,95,143,.08);
+      border-radius:36px;
+      padding:28px;
+      box-shadow:var(--shadow);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:var(--bg-soft);
+      color:var(--pink-dark);
+      font-weight:800;
+      font-size:.95rem;
+      margin-bottom:14px;
+    }
+
+    h1,h2,h3{
+      font-family:"Patrick Hand", cursive;
+      line-height:.95;
+      margin:0 0 12px;
+      letter-spacing:-.01em;
+    }
+
+    h1{
+      font-size:clamp(3rem, 9vw, 6.8rem);
+      color:var(--ink);
+    }
+
+    .hero-copy p{
+      margin:0;
+      color:var(--muted);
+      font-size:clamp(1rem, 2.4vw, 1.2rem);
+      max-width:54ch;
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:360px;
+      border-radius:38px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255,255,255,.95) 0 10%, rgba(255,173,198,.92) 18%, rgba(255,120,162,.9) 33%, transparent 34%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.5) 0 2%, transparent 3%),
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 15%, rgba(255,255,255,.75) 0 4px, transparent 5px),
+        radial-gradient(circle at 75% 80%, rgba(255,215,228,.8) 0 5px, transparent 6px),
+        linear-gradient(180deg, #fff6f8 0%, #ffe6ee 100%);
+      border:1px solid rgba(255,95,143,.08);
+      box-shadow:var(--shadow);
+    }
+
+    .hero-visual::before{
+      content:"";
+      position:absolute;
+      inset:auto 18% 18% 18%;
+      height:52%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,158,188,.7) 0 6px, transparent 7px),
+        radial-gradient(circle at 80% 60%, rgba(255,158,188,.6) 0 5px, transparent 6px),
+        radial-gradient(circle at 56% 35%, rgba(255,255,255,.85) 0 2px, transparent 4px);
+      filter:blur(.4px);
+      opacity:.9;
+    }
+
+    .hero-note{
+      position:absolute;
+      right:18px;
+      bottom:18px;
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(255,95,143,.12);
+      backdrop-filter:blur(10px);
+      border-radius:22px;
+      padding:12px 14px;
+      color:var(--pink-dark);
+      font-weight:700;
+      box-shadow:0 12px 30px rgba(255,95,143,.12);
+    }
+
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:18px;
+      margin:22px 0 18px;
+    }
+
+    .section-head h2{
+      font-size:clamp(2rem, 5vw, 3.4rem);
+    }
+
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      max-width:46ch;
+      font-size:1.02rem;
+    }
+
+    .pages-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:16px;
+    }
+
+    .page{
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,250,251,.98));
+      border:1px solid rgba(255,95,143,.1);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:22px 20px 20px;
+      display:flex;
+      flex-direction:column;
+      min-height:650px;
+      overflow:hidden;
+      transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+    }
+
+    .page:hover{
+      transform:translateY(-6px);
+      box-shadow:0 28px 70px rgba(236,75,125,.16);
+      border-color:rgba(255,95,143,.2);
+    }
+
+    .step{
+      align-self:flex-start;
+      background:#ffe8ef;
+      color:var(--pink-dark);
+      border-radius:999px;
+      padding:6px 12px;
+      font-size:.92rem;
+      font-weight:800;
+      margin-bottom:18px;
+    }
+
+    .page h3{
+      font-size:clamp(2rem, 4vw, 2.6rem);
+      margin-bottom:14px;
+    }
+
+    .highlight{
+      color:var(--pink-dark);
+    }
+
+    .soft{
+      color:var(--muted);
+    }
+
+    .page p{
+      font-size:1.18rem;
+      line-height:1.55;
+      margin:0 0 18px;
+    }
+
+    .big-line{
+      font-size:1.65rem;
+      line-height:1.2;
+      color:var(--pink-dark);
+      font-weight:800;
+      margin:4px 0 18px;
+    }
+
+    .mini-divider{
+      width:120px;
+      height:10px;
+      margin:0 0 20px;
+    }
+
+    .mini-divider svg{
+      display:block;
+      width:100%;
+      height:100%;
+    }
+
+    .page .spacer{flex:1}
+
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      min-height:54px;
+      padding:14px 18px;
+      border-radius:18px;
+      font-family:"Baloo 2", cursive;
+      font-weight:800;
+      font-size:1.08rem;
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--pink), var(--pink-dark));
+      box-shadow:0 14px 26px rgba(255,95,143,.25);
+    }
+    .btn-primary:hover{
+      transform:translateY(-2px) scale(1.01);
+      filter:saturate(1.05);
+      box-shadow:0 20px 34px rgba(255,95,143,.3);
+    }
+
+    .btn-secondary{
+      color:#fff;
+      background:linear-gradient(135deg, #caaeff, #ae84ff);
+      box-shadow:0 14px 26px rgba(169,122,246,.22);
+    }
+    .btn-secondary:hover{
+      transform:translateY(-2px) scale(1.01);
+      box-shadow:0 20px 34px rgba(169,122,246,.28);
+    }
+
+    .heart-center{
+      width:150px;height:150px;
+      margin:8px auto 24px;
+      position:relative;
+      transform:rotate(45deg);
+      background:radial-gradient(circle at 30% 30%, #fff 0%, #ffc8d9 20%, #ff8fb2 55%, #ff6f9e 100%);
+      border-radius:24px;
+      box-shadow:
+        0 0 0 16px rgba(255,214,227,.18),
+        0 0 80px rgba(255,111,158,.22);
+      animation:pulse 2.8s ease-in-out infinite;
+    }
+    .heart-center::before,
+    .heart-center::after{
+      content:"";
+      position:absolute;
+      width:150px;height:150px;
+      border-radius:50%;
+      background:inherit;
+    }
+    .heart-center::before{left:-75px;top:0}
+    .heart-center::after{left:0;top:-75px}
+
+    @keyframes pulse{
+      0%,100%{transform:rotate(45deg) scale(1)}
+      50%{transform:rotate(45deg) scale(1.05)}
+    }
+
+    .message-shot{
+      border:1px solid rgba(255,95,143,.12);
+      background:#fff;
+      border-radius:20px;
+      padding:12px;
+      overflow:hidden;
+      margin:0 0 18px;
+      box-shadow:0 10px 24px rgba(0,0,0,.05);
+    }
+
+    .chat-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding-bottom:10px;
+      border-bottom:1px solid #f3d8e1;
+      margin-bottom:12px;
+      font-size:.95rem;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .chat-person{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .avatar{
+      width:28px;height:28px;border-radius:50%;
+      background:linear-gradient(135deg, #f3c1cf, #b88a67);
+    }
+
+    .chat-body{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .bubble{
+      max-width:85%;
+      padding:10px 12px;
+      border-radius:16px;
+      line-height:1.35;
+      font-size:.96rem;
+    }
+
+    .bubble.left{
+      align-self:flex-start;
+      background:#8c5b3e;
+      color:#fff3ec;
+      border-bottom-left-radius:6px;
+    }
+
+    .bubble.right{
+      align-self:flex-end;
+      background:#3773ff;
+      color:#fff;
+      border-bottom-right-radius:6px;
+    }
+
+    .chat-input{
+      margin-top:12px;
+      border-top:1px solid #f3d8e1;
+      padding-top:10px;
+      color:#a6919a;
+      font-size:.92rem;
+    }
+
+    .choice-wrap{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+      margin-top:10px;
+    }
+
+    .footer-note{
+      text-align:center;
+      color:var(--muted);
+      padding:28px 16px 0;
+      font-size:1rem;
+      font-weight:700;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(24px);
+    }
+    .reveal.visible{
+      animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    @keyframes rise{
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .delay-1{animation-delay:.08s}
+    .delay-2{animation-delay:.16s}
+    .delay-3{animation-delay:.24s}
+    .delay-4{animation-delay:.32s}
+    .delay-5{animation-delay:.4s}
+    .delay-6{animation-delay:.48s}
+    .delay-7{animation-delay:.56s}
+    .delay-8{animation-delay:.64s}
+
+    @media (max-width: 1100px){
+      .pages-grid{grid-template-columns:repeat(2, 1fr)}
+      .hero{grid-template-columns:1fr}
+      .hero-visual{min-height:300px}
+    }
+
+    @media (max-width: 680px){
+      .nav{padding:12px 14px}
+      .nav-actions{display:none}
+      main{padding:20px 12px 60px}
+      .hero-copy{padding:22px}
+      .pages-grid{grid-template-columns:1fr}
+      .page{min-height:auto}
+      .choice-wrap{grid-template-columns:1fr}
+      .section-head{flex-direction:column; align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-hearts" aria-hidden="true">
+    <span style="left:6%; bottom:-5%; animation-duration:14s; animation-delay:0s;"></span>
+    <span style="left:18%; bottom:-8%; animation-duration:17s; animation-delay:2s;"></span>
+    <span style="left:28%; bottom:-6%; animation-duration:13s; animation-delay:4s;"></span>
+    <span style="left:42%; bottom:-9%; animation-duration:18s; animation-delay:1s;"></span>
+    <span style="left:58%; bottom:-7%; animation-duration:15s; animation-delay:5s;"></span>
+    <span style="left:72%; bottom:-10%; animation-duration:16s; animation-delay:2.5s;"></span>
+    <span style="left:86%; bottom:-4%; animation-duration:12s; animation-delay:6s;"></span>
+    <span style="left:94%; bottom:-7%; animation-duration:19s; animation-delay:3s;"></span>
+  </div>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Navigation principale">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Pour toi, Maelys</span>
+      </div>
+      <div class="nav-actions">
+        <a class="pill" href="#pages">Lire l'histoire</a>
+        <a class="pill" href="#final">La dernière page</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy reveal visible delay-1">
+        <div class="eyebrow">💗 Un petit site fait avec le cœur</div>
+        <h1>J’ai créé ça<br>pour avouer<br>mes sentiments.</h1>
+        <p>
+          Je me suis inspiré du style doux et romantique de ton image pour créer un vrai mini site,
+          avec toutes les pages déjà prêtes. Tu peux changer le prénom, les textes, ou envoyer ça tel quel.
+        </p>
+      </div>
+
+      <div class="hero-visual reveal visible delay-2" aria-hidden="true">
+        <div class="hero-note">7 pages d’émotion, de douceur et de courage ✨</div>
+      </div>
+    </section>
+
+    <section id="pages">
+      <div class="section-head reveal">
+        <div>
+          <h2>Les pages de ton site</h2>
+        </div>
+        <p>
+          Chaque bloc représente une page/étape du site. Le ton est tendre, honnête et progressif,
+          comme dans la référence que tu m’as envoyée.
+        </p>
+      </div>
+
+      <div class="pages-grid">
+        <article class="page reveal delay-1" id="page-1">
+          <div class="step">1 / 7</div>
+          <h3>Pour toi,<br><span class="highlight">Maelys 💗</span></h3>
+          <div class="heart-center" aria-hidden="true"></div>
+          <p>J’ai créé ce petit truc juste pour toi.</p>
+          <p>Avant de continuer, j’ai une question...</p>
+          <p class="big-line">Tu veux découvrir pourquoi ? 👀</p>
+          <div class="spacer"></div>
+          <a href="#page-2" class="btn btn-primary">Oui, je veux savoir →</a>
+        </article>
+
+        <article class="page reveal delay-2" id="page-2">
+          <div class="step">2 / 7</div>
+          <h3>Je pense que tu dois<br>t’en douter... 👀</h3>
+          <div class="mini-divider" aria-hidden="true">
+            <svg viewBox="0 0 120 10" fill="none">
+              <path d="M3 7C25 3 52 1 117 6" stroke="#ff6f9e" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p>Tu dois sûrement te demander pourquoi je t’envoie tout ça.</p>
+          <p>Et honnêtement...</p>
+          <p class="big-line">je pense que tu as déjà une petite idée. ❤️</p>
+          <div class="spacer"></div>
+          <a href="#page-3" class="btn btn-primary">Continuer →</a>
+        </article>
+
+        <article class="page reveal delay-3" id="page-3">
+          <div class="step">3 / 7</div>
+          <h3>Et si on revenait<br>un peu au début... 👀</h3>
+
+          <div class="message-shot" aria-label="Aperçu d'une conversation">
+            <div class="chat-top">
+              <div class="chat-person">
+                <span class="avatar" aria-hidden="true"></span>
+                <span>🌼 maelys' ☕</span>
+              </div>
+              <span>📞 ⋯</span>
+            </div>
+            <div class="chat-body">
+              <div class="bubble right">Salut cv ?</div>
+              <div class="bubble left">Cc cv et toi ?</div>
+              <div class="bubble right">Oui ça va</div>
+              <div class="bubble right">La personne qui est dans la même filière que toi tu la aussi rencontré sur TikTok ou tu la connais ?</div>
+              <div class="bubble left">Je l’ai connu pile poil avant la fin des cours une amie à moi la connaissais donc on a commencé à s’échanger</div>
+            </div>
+            <div class="chat-input">Message...</div>
+          </div>
+
+          <p>C’est fou de voir comment tout a commencé... ❤️</p>
+          <div class="spacer"></div>
+          <a href="#page-4" class="btn btn-primary">Continuer →</a>
+        </article>
+
+        <article class="page reveal delay-4" id="page-4">
+          <div class="step">4 / 7</div>
+          <h3>Et puis...<br>on s’est vus en vrai. ❤️</h3>
+          <p>Je vais être honnête...</p>
+          <p class="big-line">J’étais vraiment stressé au début 😭</p>
+          <p>
+            Je savais pas trop quoi dire ni comment agir, alors que pourtant on parlait déjà depuis un moment par message.
+          </p>
+          <p>Mais au final, j’étais vraiment content de te voir en vrai. 🥰</p>
+          <div class="spacer"></div>
+          <a href="#page-5" class="btn btn-primary">Continuer →</a>
+        </article>
+
+        <article class="page reveal delay-5" id="page-5">
+          <div class="step">5 / 7</div>
+          <h3>Et au fil du temps...</h3>
+          <div class="mini-divider" aria-hidden="true">
+            <svg viewBox="0 0 120 10" fill="none">
+              <path d="M3 7C25 3 52 1 117 6" stroke="#ff6f9e" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p>
+            Plus on parle, plus je me rends compte que j’aime vraiment passer du temps à parler avec toi. ❤️
+          </p>
+          <p>
+            Même un simple message de toi peut me mettre de bonne humeur. 😉
+          </p>
+          <p>
+            Et je crois que tu commences à comprendre où je veux en venir... 👀
+          </p>
+          <div class="spacer"></div>
+          <a href="#page-6" class="btn btn-primary">Continuer →</a>
+        </article>
+
+        <article class="page reveal delay-6" id="page-6">
+          <div class="step">6 / 7</div>
+          <h3>Bon... je vais<br>te le dire. ❤️</h3>
+          <p>Ça fait un moment que je voulais te le dire, mais je savais pas vraiment comment.</p>
+          <p class="big-line">Maelys, tu me plais vraiment.</p>
+          <div class="mini-divider" aria-hidden="true">
+            <svg viewBox="0 0 120 10" fill="none">
+              <path d="M3 7C25 3 52 1 117 6" stroke="#ff6f9e" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p>
+            J’aime parler avec toi, j’aime les moments qu’on passe ensemble, et j’avais envie que tu le saches.
+          </p>
+          <p class="big-line">Alors j’ai préféré te créer tout ça. 💗</p>
+          <div class="spacer"></div>
+          <a href="#final" class="btn btn-primary">Continuer →</a>
+        </article>
+
+        <article class="page reveal delay-7" id="final">
+          <div class="step">7 / 7</div>
+          <h3>Maintenant...<br>c’est à toi. 💗</h3>
+          <p>
+            Je t’ai dit ce que je ressentais. Je veux juste savoir ce que toi, tu en penses. 👀
+          </p>
+          <p class="big-line">Alors Maelys... Est-ce que je te plais aussi ? ❤️</p>
+
+          <div class="choice-wrap">
+            <button class="btn btn-primary response-btn" data-response="oui">Oui 🥹</button>
+            <button class="btn btn-secondary response-btn" data-response="jsp">Je sais pas encore 🙈</button>
+          </div>
+
+          <p class="soft" id="responseText" style="margin-top:18px;">
+            Peu importe ta réponse, merci d’avoir été jusqu’au bout. 🫶
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer-note reveal">❤️ Fait avec tout mon cœur, pour toi Maelys ❤️</p>
+  </main>
+
+  <script>
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {threshold:.14});
+
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+
+    const responseText = document.getElementById('responseText');
+    const buttons = document.querySelectorAll('.response-btn');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.response;
+
+        if(type === 'oui'){
+          responseText.innerHTML = "Aaaaah 💖 Si c’est oui, alors je crois que c’est mon plus beau message de l’année. J’espère qu’on pourra écrire une jolie suite ensemble.";
+        } else {
+          responseText.innerHTML = "Prends ton temps 💗 Le plus important, c’était d’être sincère avec toi. Peu importe la réponse, je suis déjà content d’avoir pu te dire ce que je ressens.";
+        }
+
+        buttons.forEach(b => b.style.opacity = ".82");
+        btn.style.opacity = "1";
+        btn.style.transform = "translateY(-2px) scale(1.02)";
+      });
+    });
+  </script>
+</body>
+</html>
